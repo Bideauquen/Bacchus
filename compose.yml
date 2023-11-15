@@ -19,10 +19,20 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile 
+      dockerfile: app/Dockerfile 
     container_name: bacchus
     ports:
       - "8080:8080"
+    networks:
+      - network1
+
+  model:
+    build:
+      context: .
+      dockerfile: model/Dockerfile
+    container_name: model
+    ports:
+      - "8081:8081"
     networks:
       - network1
 volumes:
