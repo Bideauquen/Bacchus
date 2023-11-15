@@ -1,0 +1,35 @@
+version: '3.1'
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - db:/data/db
+      - db/mongod.conf:/etc/mongod.conf
+    command: --config /etc/mongod.conf
+    networks:
+      - network1
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    container_name: bacchus
+    ports:
+      - "8080:8080"
+    networks:
+      - network1
+volumes:
+  db:
+
+networks:
+  network1:
+   driver: bridge
+
+  
