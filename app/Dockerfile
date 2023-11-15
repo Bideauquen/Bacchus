@@ -9,7 +9,7 @@ WORKDIR /app
 COPY /app /app
 
 # Install the required packages
-RUN pip install fastapi uvicorn pymongo pydantic
+RUN pip install fastapi[all] pymongo
 
 # Expose port 80 for the FastAPI application
 EXPOSE 8080
