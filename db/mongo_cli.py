@@ -55,12 +55,16 @@ class MongoDatabase:
         self.client = pymongo.MongoClient(f"mongodb://{username}:{password}@mongo:{port}/")
         self.db = self.client["bacchus"]
         self.wines = self.db["wines"]
+        self.models = self.db["models"]
 
         # If the wines collection is empty, insert data from csv file
         if self.wines.count_documents({}) == 0:
-            csv_reader = CsvReader("Wines.csv")
+            csv_reader = CsvReader("db/Wines.csv")
             data = csv_reader.read_csv()
-            db.insert_data("wines", data)
+            # Remove the id column
+            for row in data:
+                del row["Id"]
+            self.insert_data("wines", data)
 
     def create_collection(self, collection_name):
         if collection_name in self.db.list_collection_names():
@@ -73,6 +77,17 @@ class MongoDatabase:
         collection = self.db[collection_name]
         collection.insert_many(data)
         print("Data inserted successfully.")
+
+    def get_last_model(self):
+        """
+        Returns the last model in the database (using the version number).
+        
+        Returns
+        -------
+        dict
+            The last model in the database.
+        """
+        return self.models.find_one(sort=[("version", pymongo.DESCENDING)])
 
 class CsvReader:
     def __init__(self, file_path):
@@ -87,8 +102,4 @@ class CsvReader:
         return data
 
 if __name__ == '__main__':
-    db = MongoDatabase("bacchus")
-    db.create_collection("wines")
-    csv_reader = CsvReader("Wines.csv")
-    data = csv_reader.read_csv()
-    db.insert_data("wines", data)
+    MongoDatabase()

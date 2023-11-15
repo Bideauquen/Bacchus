@@ -1,5 +1,6 @@
 
 from pydantic import BaseModel
+from bson import ObjectId
 
 
 # Here are the attributes of the Wine class
@@ -37,10 +38,7 @@ class Wine(BaseModel):
         alcohol of the wine
     quality: float
         quality of the wine
-    id: int
-        id of the wine
     """
-
     fixed_acidity: float
     volatile_acidity: float
     citric_acid: float
@@ -53,7 +51,54 @@ class Wine(BaseModel):
     sulphates: float
     alcohol: float
     quality: float
-    id: int
 
-    class Config:
-        orm_mode = True
+class Layer(BaseModel) :
+    """
+    This class is used to create a pydantic model of the Layer class
+
+    Attributes:
+    -----------
+    type: str
+        type of the layer
+    units: int
+        number of units of the layer
+    activation: str
+        activation function of the layer
+    """
+    type: str
+    units: int
+    activation: str
+
+class Structure(BaseModel) :
+    """
+    This class is used to create a pydantic model of the Structur class
+
+    Attributes:
+    -----------
+    layers: list
+        list of layers of the model
+    """
+
+    layers: list[Layer]
+    nb_params: int
+
+class Model(BaseModel) :
+    """
+    This class is used to create a pydantic model of the Model class
+
+    Attributes:
+    -----------
+    version: str
+        version of the model
+    type: str
+        type of the model
+    structure: dict
+        structure of the model
+    model : dict
+        serialized model
+    """
+    version: str
+    type: str
+    structure: Structure
+    model : dict
+
