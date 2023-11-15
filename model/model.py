@@ -30,9 +30,10 @@ def plot_learning_curves(history):
 # Assuming you have a DataFrame named 'df' with the mentioned features and the target 'quality'
 df = pd.read_csv('db/Wines.csv')
 
-# Split the data into features and target
-X = df.drop('quality', axis=1)
-y = df['quality']
+# Split the data into features and target (target is the quality column between 0 and 10)
+X = df.drop(['quality', 'Id'], axis=1)
+# Convert the target to a normalized output between 0 and 1 (because quality is between 0 and 10)
+y = (df['quality']-min(df['quality'])) / (max(df['quality']) - min(df['quality']))
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -45,10 +46,11 @@ X_test_scaled = scaler.transform(X_test)
 # Build the model
 model = Sequential()
 model.add(Dense(64, input_dim=X_train_scaled.shape[1], activation='relu'))  # Hidden layer with 64 neurons and ReLU activation
-model.add(Dense(1, activation='linear'))  # Output layer with linear activation for regression tasks
+model.add(Dense(32, activation='relu'))  # Hidden layer with 32 neurons and ReLU activation
+model.add(Dense(1, activation='sigmoid'))  # Output layer with 1 neuron and sigmoid activation
 
 # Compile the model
-model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model
 model.fit(X_train_scaled, y_train, epochs=50, batch_size=32, validation_split=0.2)
