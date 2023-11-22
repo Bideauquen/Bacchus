@@ -17,8 +17,7 @@
   },
   "homepage": "https://github.com/Bideauquen/bacchus#readme",
   "dependencies": {
-    "@discordjs/voice": "^0.16.1",
-    "discord.js": "^13.17.1",
+    "discord.js": "^14.14.1",
     "ytdl-core": "^4.11.5"
   },
   "keywords": []
