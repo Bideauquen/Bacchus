@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI
+import websockets
 
 import os
 import sys
@@ -28,3 +29,13 @@ async def add_wine(wine : Wine):
 @app.get("/api/model")
 async def get_model():
     return {"model": db.wines.find_one()}
+
+# Retrain the model
+@app.post("/api/model/retrain")
+async def retrain_model():
+    # Retrieve the data from the database
+    data = db.wines.find()
+    # Send the data to the model docker through a websocket
+    async with websockets.connect("ws://model:8765") as websocket:
+        await websocket.send(data)
+        await websocket.recv()
