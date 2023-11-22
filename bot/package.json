@@ -1,0 +1,25 @@
+{
+  "name": "package.json",
+  "version": "1.0.0",
+  "description": "## Architecture",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bideauquen/bacchus.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bideauquen/bacchus/issues"
+  },
+  "homepage": "https://github.com/Bideauquen/bacchus#readme",
+  "dependencies": {
+    "@discordjs/voice": "^0.16.1",
+    "discord.js": "^13.17.1",
+    "ytdl-core": "^4.11.5"
+  },
+  "keywords": []
+}
